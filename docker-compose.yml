@@ -1,0 +1,29 @@
+version: "3.9"
+
+services:
+  api:
+    build: .
+    container_name: project-2-api
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql://mahesh:password123@db:5432/project2db
+      - AZURE_STORAGE_CONNECTION_STRING=${AZURE_STORAGE_CONNECTION_STRING}
+      - AZURE_CONTAINER_NAME=files
+    depends_on:
+      - db
+
+  db:
+    image: postgres:15
+    container_name: project-2-db
+    environment:
+      POSTGRES_USER: mahesh
+      POSTGRES_PASSWORD: password123
+      POSTGRES_DB: project2db
+    ports:
+      - "5432:5432"
+    volumes:
+      - project2_data:/var/lib/postgresql/data
+
+volumes:
+  project2_data:
