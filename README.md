@@ -56,3 +56,4 @@ project-2-file-storage-api/
 ├── docker-compose.yml
 ├── requirements.txt
 └── README.md
+```
