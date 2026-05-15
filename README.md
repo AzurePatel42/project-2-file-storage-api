@@ -27,12 +27,12 @@ It supports:
 
 ### Components
 
-- FastAPI — REST API backend
-- PostgreSQL — Stores file metadata
-- Azure Blob Storage — Stores file content
-- Docker Compose — Local development environment
-- GitHub Actions — CI/CD pipeline
-- Azure App Service — Deployment target
+- FastAPI — REST API backend  
+- PostgreSQL — Stores file metadata  
+- Azure Blob Storage — Stores file content  
+- Docker Compose — Local development environment  
+- GitHub Actions — CI/CD pipeline  
+- Azure App Service — Deployment target  
 
 ---
 
