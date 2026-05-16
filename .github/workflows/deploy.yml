@@ -1,4 +1,4 @@
-name: Deploy Project 2 API
+name: build-and-deploy
 
 on:
   push:
@@ -13,25 +13,40 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Log in to Azure
+      - name: Log in to Azure (force service principal)
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
+          enable-AzPSSession: false
+          allow-no-subscriptions: true
+          auth-type: service_principal
+
+      - name: Force Azure CLI login manually
+        run: |
+          az login --service-principal \
+            -u ${{ fromJson(secrets.AZURE_CREDENTIALS).clientId }} \
+            -p ${{ fromJson(secrets.AZURE_CREDENTIALS).clientSecret }} \
+            --tenant ${{ fromJson(secrets.AZURE_CREDENTIALS).tenantId }}
+
+      - name: Azure CLI - Set subscription
+        run: |
+          az account set --subscription ${{ fromJson(secrets.AZURE_CREDENTIALS).subscriptionId }}
 
       - name: Log in to Azure Container Registry
         run: |
           az acr login --name ${{ secrets.ACR_NAME }}
 
-      - name: Build and push Docker image
+      - name: Build Docker image
         run: |
-          IMAGE=${{ secrets.ACR_NAME }}.azurecr.io/project2-api:${{ github.sha }}
-          docker build -t $IMAGE .
-          docker push $IMAGE
-          echo "IMAGE=$IMAGE" >> $GITHUB_ENV
+          docker build -t ${{ secrets.ACR_NAME }}.azurecr.io/project2-api:latest .
+
+      - name: Push Docker image
+        run: |
+          docker push ${{ secrets.ACR_NAME }}.azurecr.io/project2-api:latest
 
       - name: Deploy to Azure Container Apps
         run: |
           az containerapp update \
             --name ${{ secrets.ACA_NAME }} \
             --resource-group ${{ secrets.AZURE_RG }} \
-            --image $IMAGE
+            --image ${{ secrets.ACR_NAME }}.azurecr.io/project2-api:latest
