@@ -37,12 +37,12 @@ jobs:
           az acr login --name ${{ secrets.ACR_NAME }}
 
       - name: Build Docker image
-        working-directory: ${{ github.workspace }}
+        working-directory: ${{ github.workspace }}/project-2-file-storage-api
         run: |
           docker build -t ${{ secrets.ACR_NAME }}.azurecr.io/project2-api:latest .
 
       - name: Push Docker image
-        working-directory: ${{ github.workspace }}
+        working-directory: ${{ github.workspace }}/project-2-file-storage-api
         run: |
           docker push ${{ secrets.ACR_NAME }}.azurecr.io/project2-api:latest
 
