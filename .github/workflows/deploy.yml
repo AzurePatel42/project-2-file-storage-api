@@ -11,7 +11,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Log in to Azure (force service principal)
         uses: azure/login@v1
@@ -36,10 +36,10 @@ jobs:
         run: |
           az acr login --name ${{ secrets.ACR_NAME }}
 
-      - name: Switch to classic Docker builder
-        run: |
-          docker buildx create --use --driver docker-container || true
-          docker buildx inspect --bootstrap
+      - name: Set up Docker Buildx (disable buildx override)
+        uses: docker/setup-buildx-action@v3
+        with:
+          install: false
 
       - name: Build Docker image
         run: |
