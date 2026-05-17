@@ -31,3 +31,18 @@ def upload_file_to_blob(container_client, file, filename):
 def delete_file_from_blob(container_client, filename):
     blob_client = container_client.get_blob_client(filename)
     blob_client.delete_blob()
+
+def list_files_in_blob(container_client):
+    blob_list = container_client.list_blobs()
+
+    files = []
+    for blob in blob_list:
+        files.append({
+            "id": 0,  # no DB, so dummy ID
+            "filename": blob.name,
+            "content_type": blob.content_settings.content_type if blob.content_settings else "",
+            "size": blob.size,
+            "url": f"{container_client.url}/{blob.name}"
+        })
+
+    return files

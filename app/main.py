@@ -12,4 +12,6 @@ app.include_router(health.router, prefix="/health", tags=["Health"])
 
 @app.get("/")
 def root():
-    return {"message": "Project 2 File Storage API is running successfully and KTS is watching"}
+    return {
+        "message": "Mentor is smiling — Project 2 Cloud File Storage API is running successfully and KTS is watching"
+    }
