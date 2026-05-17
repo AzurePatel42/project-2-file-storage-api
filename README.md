@@ -20,6 +20,8 @@
   <img src="https://img.shields.io/badge/GitHub%20Actions-CI%2FCD-2088FF?style=for-the-badge&logo=githubactions&logoColor=white" />
 
 </p>
+<img src="https://img.shields.io/badge/Deployed%20on-Azure-0078D4?style=for-the-badge&logo=microsoftazure&logoColor=white" />
+
 
 
 FastAPI • PostgreSQL • Docker • Azure Blob Storage
